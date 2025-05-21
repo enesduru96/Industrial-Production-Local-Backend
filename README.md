@@ -5,6 +5,7 @@ A factory backend project that was used as the server to communicate with the lo
 Although there are other desktop apps communicating with this backend (warehouse, human resources etc.) written in electron-js and c#,
 I am unable to share them due to privacy of the company I worked with.
 All the features were added by me exactly as the company requested.
+
 ---
 
 This backend program provided services to the other apps such as:
