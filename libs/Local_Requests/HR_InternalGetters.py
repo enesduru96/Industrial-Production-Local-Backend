@@ -494,7 +494,6 @@ def Internal_GetALL_Employee_Infos():
         cursor.close()
         db.close()
         if len(foundRecords) > 0:
-            # print(foundRecords[0])
             for record in foundRecords:
                 data = {
                     "employee_name": record[0],

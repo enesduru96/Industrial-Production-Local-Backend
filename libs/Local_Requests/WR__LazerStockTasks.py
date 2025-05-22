@@ -75,9 +75,6 @@ async def check_and_insert_stock_drop_logs(data_dict):
 
         # Check if already added
 
-        print("debug")
-        print(f"{date_string} {material_type} {sheet_size} {thickness} {sheet_count} {is_fason} {instance_number} 1")
-        print("debug")
 
         try:
             sql_getstring = """

@@ -180,55 +180,47 @@ def edit_product(data):
     db = GetMyDB()
     cursor = db.cursor()
 
-    urun_id = data['urun_id']
-    urun_sirketi = data['urun_sirketi']
-    urun_adi = data['urun_adi']
-    urun_miktari = data['urun_miktari']
-    urun_foto_base64 = data['urun_foto']
-    urun_foto_uuid = data['urun_foto_uuid']
-    urun_bilesenleri = data['urun_bilesenleri']
+    product_id = data['urun_id']
+    product_company = data['urun_sirketi']
+    product_name = data['urun_adi']
+    product_amount = data['urun_miktari']
+    product_photo_base64 = data['urun_foto']
+    product_photo_uuid = data['urun_foto_uuid']
+    product_elements = data['urun_bilesenleri']
 
-
-    print("******************")
-    print(urun_id)
-    print("******************")
-    
 
     try:
-        # Ürünü güncelle
         query = "UPDATE wr_products SET product_name = %s, company = %s, amount = %s, photo_uuid = %s WHERE id = %s"
-        cursor.execute(query, (urun_adi, urun_sirketi, urun_miktari, urun_foto_uuid, urun_id))
+        cursor.execute(query, (product_name, product_company, product_amount, product_photo_uuid, product_id))
 
         sync_data = {
             "type": "update",
             "table": "wr_products",
             "sql_string": Utilities.encode_string(query),
-            "values": [[urun_adi, urun_sirketi, urun_miktari, urun_foto_uuid, urun_id]]
+            "values": [[product_name, product_company, product_amount, product_photo_uuid, product_id]]
         }
         CloudRequests.Save_New_Cloud_Sync_Task(sync_data)
 
-        photo_save_result = save_photo_locally(urun_foto_base64, f"{urun_foto_uuid}.jpg")
+        photo_save_result = save_photo_locally(product_photo_base64, f"{product_photo_uuid}.jpg")
 
 
-        # Eski bileşenleri sil
         query = "DELETE FROM wr_product_recipes WHERE product_id = %s"
-        cursor.execute(query, (urun_id,))
+        cursor.execute(query, (product_id,))
 
         sync_data = {
             "type": "delete",
             "table": "wr_product_recipes",
             "sql_string": Utilities.encode_string(query),
-            "values": [[urun_id]]
+            "values": [[product_id]]
         }
         CloudRequests.Save_New_Cloud_Sync_Task(sync_data)
 
-        # Yeni bileşenleri ekle
         bilesen_data = []
-        for bilesen in urun_bilesenleri:
+        for bilesen in product_elements:
             bilesen_adi = bilesen["adi"]
             bilesen_miktari = bilesen["miktar"]
             bilesen_id = WR___InternalGetters.Internal_Get_Hammadde_ID_With_Name(bilesen_adi)
-            bilesen_data.append((None, urun_id, urun_adi, bilesen_id, bilesen_adi, bilesen_miktari))
+            bilesen_data.append((None, product_id, product_name, bilesen_id, bilesen_adi, bilesen_miktari))
 
         query = "INSERT INTO wr_product_recipes (id, product_id, product_name, material_id, material_name, material_count) VALUES (%s, %s, %s, %s, %s, %s)"
         cursor.executemany(query, bilesen_data)
@@ -241,7 +233,6 @@ def edit_product(data):
         }
         CloudRequests.Save_New_Cloud_Sync_Task(sync_data)
         
-        # Veritabanındaki değişiklikleri kaydet
         db.commit()
         response_data = {"status": "ok"}
     except Exception as error:

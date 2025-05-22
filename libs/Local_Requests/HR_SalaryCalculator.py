@@ -502,7 +502,6 @@ def calculate_employee_salary(employee_data, year, month):
                 if item["employee_register_id"] != employee_register_number:
                     continue
                 if str(employee_register_number) == "16":
-                    # print(f"\n{item}")
                     pass
                 
                 try:
@@ -510,15 +509,11 @@ def calculate_employee_salary(employee_data, year, month):
                         date_datetime_obj = datetime.strptime(item["entry"], '%Y-%m-%d %H:%M:%S')
                         date = date_datetime_obj.strftime('%d-%m-%Y')
                         if str(employee_register_number) == "16":
-                            # print(date)
                             pass
                     except Exception as error:
                         if str(employee_register_number) == "16":
                             print(error)
                         print(error)
-                        # if str(employee_register_number) == "16":
-                        #     print(item)
-                        #LogError(error)
                         try:
                             date_datetime_obj = datetime.strptime(item["exit"], '%Y-%m-%d %H:%M:%S')
                             date = date_datetime_obj.strftime('%d-%m-%Y')
@@ -527,28 +522,18 @@ def calculate_employee_salary(employee_data, year, month):
                         except Exception as error:
                             if str(employee_register_number) == "16":
                                 print(f"NOTHING HAPPENED BRUH {item}")
-                            # if str(employee_register_number) == "16":
-                            #     print(item)
-                            # LogError(error)
-                            pass #TODO
+                            pass
                     
                     try:
                         start_datetime_obj = datetime.strptime(item["entry"], '%Y-%m-%d %H:%M:%S')
                         start_time = start_datetime_obj.strftime('%H:%M')
                     except Exception as error:
-                        # if str(employee_register_number) == "16":
-                        #     print(item)
-                        # LogError(error) #TODO
                         start_time = None
 
                     try:
                         end_datetime_obj = datetime.strptime(item["exit"], '%Y-%m-%d %H:%M:%S')
                         end_time = end_datetime_obj.strftime('%H:%M')
                     except Exception as error:
-                        # if str(employee_register_number) == "16":
-                        #     print(item)
-                        # LogError(error) # TODO
-                        # print(item)
                         end_time = None
 
                     if "is_extra" in item:
@@ -572,7 +557,6 @@ def calculate_employee_salary(employee_data, year, month):
                     employee_work_data.append(data_to_append)
                 except:
                     pass
-                # input("->>>")
     working_days = []
     all_days_of_month = json.loads(Helpers.get_all_days_of_month(year, month))
 
@@ -583,16 +567,12 @@ def calculate_employee_salary(employee_data, year, month):
                 "weekday" : week[day]["weekday"]
             }
             working_days.append(date_info)
-    
-    # if str(employee_register_number) == "16":
-    #     pprint.pprint(working_days)
-    #     pprint.pprint(employee_work_data)
+
 
     for day in working_days:
         if any(item['date'] == day['date'] for item in employee_work_data):
             pass
         else:
-            #print(f"{day} does not exist in 'work data'.")
             data_to_append = {
                 "date" : day["date"],
                 "start_time" : None,
@@ -600,8 +580,6 @@ def calculate_employee_salary(employee_data, year, month):
                 "weekday" : day["weekday"]
             }
             employee_work_data.append(data_to_append)
-    # if str(employee_register_number) == "16":
-    #     pprint.pprint(employee_work_data)
 
     sorted_employee_work_data = sorted(employee_work_data, key=lambda d: parse_date(d['date']))
 
@@ -629,11 +607,10 @@ def is_weekday_date(date_string):
         date = datetime.strptime(date_string, '%d.%m.%Y')
 
 
-    # Check if the date is a weekday
     if date.weekday() < 5:
-        return True  # It's a weekday
+        return True
     else:
-        return False  # It's a weekend
+        return False
 
 def get_week_number(date_string):
     date = datetime.strptime(date_string, "%d-%m-%Y")
@@ -1113,7 +1090,7 @@ def calculate_terminated_employee_payment(data):
 
     attendance_info = get_result["result"]
     if attendance_info == None:
-        pass #TODO FIX
+        pass
     else:
         for unique_day in attendance_info:
             for item in attendance_info[unique_day]:
@@ -1168,7 +1145,6 @@ def calculate_terminated_employee_payment(data):
         if any(item['date'] == day['date'] for item in employee_work_data):
             pass
         else:
-            #print(f"{day} does not exist in 'work data'.")
             data_to_append = {
                 "date" : day["date"],
                 "start_time" : None,

@@ -46,12 +46,10 @@ def login():
     username = request.json.get("username", None)
     password = request.json.get("password", None)
 
-    # Replace this with your user validation logic
     if username != "companyname" or password != "companypassword":
         return jsonify({"msg": "x"}), 401
 
-    # Create JWT token
-    access_expires = timedelta(hours=1)  # Örneğin, 1 saat
+    access_expires = timedelta(hours=1)
     access_token = create_access_token(identity={"username": username}, expires_delta=access_expires)
 
     return {
@@ -156,7 +154,7 @@ def Handle_Edit_Employee():
     access_granted = check_user_access(request.headers)
     if access_granted == False: return {"status" : "access_denied"}
     data = request.json
-    data_received = data['data_sent'] #TODO Handle sent data
+    data_received = data['data_sent']
     response_data = HR_EmployeeHandler.Edit_Employee(data_received)
     return response_data
 
@@ -166,7 +164,7 @@ def Handle_Set_Employee_Left():
     access_granted = check_user_access(request.headers)
     if access_granted == False: return {"status" : "access_denied"}
     data = request.json
-    data_received = data['data_sent'] #TODO Handle sent data
+    data_received = data['data_sent']
     response_data = HR_EmployeeHandler.Set_Employee_Left(data_received)
 
     response = app.response_class(response=response_data, status=200, mimetype='application/json')
@@ -178,7 +176,7 @@ def Hanlde_Remove_Employee():
     access_granted = check_user_access(request.headers)
     if access_granted == False: return {"status" : "access_denied"}
     data = request.json
-    data_received = data['data_sent'] #TODO Handle sent data
+    data_received = data['data_sent']
     response_data = HR_EmployeeHandler.Remove_Employee_From_Database(data_received)
 
     response = app.response_class(response=response_data, status=200, mimetype='application/json')
@@ -491,20 +489,18 @@ def Handle_Calculate_Salary():
     access_granted = check_user_access(request.headers)
     if access_granted == False: return {"status" : "access_denied"}
     data = request.json
-    data_received = data['data_sent'] #TODO Handle sent data
-    #print(data_received)
+    data_received = data['data_sent']
     response_data = HR_SalaryCalculator.calculate_salaries(data_received)
     return response_data
 
 
-#Genel bordro
 @app.route('/calculate-general-personnel-expenses', methods=['POST'])
 @jwt_required()
 def Handle_Calculate_General_Personnel_Expenses():
     access_granted = check_user_access(request.headers)
     if access_granted == False: return {"status" : "access_denied"}
     data = request.json
-    data_received = data['data_sent'] #TODO Handle sent data
+    data_received = data['data_sent']
     response_data = HR_SalaryCalculator.calculate_general_expenses(data_received)
     return response_data
 
@@ -517,7 +513,7 @@ def Handle_Calculate_Terminated_Employee():
     access_granted = check_user_access(request.headers)
     if access_granted == False: return {"status" : "access_denied"}
     data = request.json
-    data_received = data['data_sent'] #TODO Handle sent data
+    data_received = data['data_sent']
     response_data = HR_SalaryCalculator.calculate_terminated_employee_payment(data_received)
     return response_data
 
@@ -527,7 +523,7 @@ def Handle_Terminate_Employee():
     access_granted = check_user_access(request.headers)
     if access_granted == False: return {"status" : "access_denied"}
     data = request.json
-    data_received = data['data_sent'] #TODO Handle sent data
+    data_received = data['data_sent']
     response_data = HR_EmployeeHandler.Set_Employee_Left(data_received)
     return response_data
 # endregion
@@ -568,7 +564,6 @@ def Handle_Get_Highest_Rating_Employee_Statistics():
 # endregion
 
 
-# BELOW THIS PART IS STILL USING LOCALREQUESTS MAIN FILE
 
 # region ADVANCE PAYMENTS
 
@@ -578,7 +573,7 @@ def Handle_Add_Advance_payment():
     access_granted = check_user_access(request.headers)
     if access_granted == False: return {"status" : "access_denied"}
     data = request.json
-    data_received = data['data_sent'] #TODO Handle sent data
+    data_received = data['data_sent']
     response_data = LocalRequests.Add_Advance_Payment(data_received)
     return response_data
 
@@ -588,7 +583,7 @@ def Handle_Get_Advance_Payments():
     access_granted = check_user_access(request.headers)
     if access_granted == False: return {"status" : "access_denied"}
     data = request.json
-    data_received = data['data_sent'] #TODO Handle sent data
+    data_received = data['data_sent']
     response_data = LocalRequests.Get_Advance_Payments(data_received)
     return response_data
 
@@ -598,7 +593,7 @@ def Handle_GET_Advance_Payment_Specific():
     access_granted = check_user_access(request.headers)
     if access_granted == False: return {"status" : "access_denied"}
     data = request.json
-    data_received = data['data_sent'] #TODO Handle sent data
+    data_received = data['data_sent']
     response_data = LocalRequests.Get_Specific_Advance_Payment(data_received)
     return response_data
 
@@ -608,7 +603,7 @@ def Handle_Edit_Advance_Payment():
     access_granted = check_user_access(request.headers)
     if access_granted == False: return {"status" : "access_denied"}
     data = request.json
-    data_received = data['data_sent'] #TODO Handle sent data
+    data_received = data['data_sent']
     response_data = LocalRequests.Edit_Advance_Payment(data_received)
     return response_data
 
@@ -618,7 +613,7 @@ def Handle_Remove_Advance_Payment():
     access_granted = check_user_access(request.headers)
     if access_granted == False: return {"status" : "access_denied"}
     data = request.json
-    data_received = data['data_sent'] #TODO Handle sent data
+    data_received = data['data_sent']
     response_data = LocalRequests.Remove_Advance_Payment(data_received)
     return response_data
 
@@ -632,7 +627,7 @@ def Handle_Add_Extra_payment():
     access_granted = check_user_access(request.headers)
     if access_granted == False: return {"status" : "access_denied"}
     data = request.json
-    data_received = data['data_sent'] #TODO Handle sent data
+    data_received = data['data_sent']
     response_data = LocalRequests.Add_Extra_Payment(data_received)
     return response_data
 
@@ -642,7 +637,7 @@ def Handle_Get_Extra_Payments():
     access_granted = check_user_access(request.headers)
     if access_granted == False: return {"status" : "access_denied"}
     data = request.json
-    data_received = data['data_sent'] #TODO Handle sent data
+    data_received = data['data_sent']
     response_data = LocalRequests.Get_Extra_Payments(data_received)
     return response_data
 
@@ -652,7 +647,7 @@ def Handle_GET_Extra_Payment_Specific():
     access_granted = check_user_access(request.headers)
     if access_granted == False: return {"status" : "access_denied"}
     data = request.json
-    data_received = data['data_sent'] #TODO Handle sent data
+    data_received = data['data_sent']
     response_data = LocalRequests.Get_Specific_Extra_Payment(data_received)
     return response_data
 
@@ -662,7 +657,7 @@ def Handle_Edit_Extra_Payment():
     access_granted = check_user_access(request.headers)
     if access_granted == False: return {"status" : "access_denied"}
     data = request.json
-    data_received = data['data_sent'] #TODO Handle sent data
+    data_received = data['data_sent']
     response_data = LocalRequests.Edit_Extra_Payment(data_received)
     return response_data
 
@@ -672,7 +667,7 @@ def Handle_Remove_Extra_Payment():
     access_granted = check_user_access(request.headers)
     if access_granted == False: return {"status" : "access_denied"}
     data = request.json
-    data_received = data['data_sent'] #TODO Handle sent data
+    data_received = data['data_sent']
     response_data = LocalRequests.Remove_Extra_Payment(data_received)
     return response_data
 
@@ -686,7 +681,7 @@ def Handle_Add_Permission():
     access_granted = check_user_access(request.headers)
     if access_granted == False: return {"status" : "access_denied"}
     data = request.json
-    data_received = data['data_sent'] #TODO Handle sent data
+    data_received = data['data_sent']
     response_data = LocalRequests.Add_Permission(data_received)
     return response_data
 
@@ -696,7 +691,7 @@ def Handle_Get_Permissions():
     access_granted = check_user_access(request.headers)
     if access_granted == False: return {"status" : "access_denied"}
     data = request.json
-    data_received = data['data_sent'] #TODO Handle sent data
+    data_received = data['data_sent']
     response_data = LocalRequests.Get_Permissions(data_received)
     return response_data
 
@@ -706,7 +701,7 @@ def Handle_GET_Permission_Specific():
     access_granted = check_user_access(request.headers)
     if access_granted == False: return {"status" : "access_denied"}
     data = request.json
-    data_received = data['data_sent'] #TODO Handle sent data
+    data_received = data['data_sent']
     response_data = LocalRequests.Get_Specific_Permission(data_received)
     return response_data
 
@@ -716,7 +711,7 @@ def Handle_Edit_Permission():
     access_granted = check_user_access(request.headers)
     if access_granted == False: return {"status" : "access_denied"}
     data = request.json
-    data_received = data['data_sent'] #TODO Handle sent data
+    data_received = data['data_sent']
     response_data = LocalRequests.Edit_Permission(data_received)
     return response_data
 
@@ -726,7 +721,7 @@ def Handle_Remove_Permission():
     access_granted = check_user_access(request.headers)
     if access_granted == False: return {"status" : "access_denied"}
     data = request.json
-    data_received = data['data_sent'] #TODO Handle sent data
+    data_received = data['data_sent']
     response_data = LocalRequests.Remove_Permission(data_received)
     return response_data
 
@@ -741,7 +736,7 @@ def Handle_Add_Special_Holiday():
     if access_granted == False: return {"status" : "access_denied"}
     try:
         data = request.json
-        data_received = data['data_sent'] #TODO Handle sent data
+        data_received = data['data_sent']
         response_data = LocalRequests.Add_Special_Holiday(data_received)
         return response_data
     except Exception as error:
@@ -763,7 +758,7 @@ def Handle_Edit_Special_Holiday():
     access_granted = check_user_access(request.headers)
     if access_granted == False: return {"status" : "access_denied"}
     data = request.json
-    data_received = data['data_sent'] #TODO Handle sent data
+    data_received = data['data_sent']
     response_data = LocalRequests.Edit_Special_Holiday(data_received)
     return response_data
 
@@ -773,7 +768,7 @@ def Handle_Remove_Special_Holiday():
     access_granted = check_user_access(request.headers)
     if access_granted == False: return {"status" : "access_denied"}
     data = request.json
-    data_received = data['data_sent'] #TODO Handle sent data
+    data_received = data['data_sent']
     response_data = LocalRequests.Remove_Special_Holiday(data_received)
     return response_data
 

@@ -152,7 +152,6 @@ def Get_Employee_Attendance_From_Database(data):
             all_dates.append(end_date.strftime('%Y-%m-%d %H:%M:%S'))
             
 
-            #her bir günün başlangıç ve bitişi arasında kaç unique kullanıcı var bul.
             total_dates_data = {}
             for one_day_string in all_dates:
                 total_dates_data[one_day_string] = []
@@ -162,7 +161,6 @@ def Get_Employee_Attendance_From_Database(data):
                 end_of_day_string = end_of_day.strftime('%Y-%m-%d %H:%M:%S')
 
 
-                # başlangıç ve bitiş arasında her bir unique kullanıcı için kaç entry var bak:
                 this_day_unique_users = {}
                 for entry_result in results:
                     entry_date_string = datetime.strftime(entry_result['entry_date'], '%Y-%m-%d %H:%M:%S')
@@ -223,11 +221,8 @@ def Get_Employee_Attendance_From_Database(data):
 
                         if employee_company_string == None:
                             continue
-                        #print(employee_company_string)
 
-                        #TODO -> get user name, surname,company with key id
                         if len(unique_user_day_data[key]) == 1:
-                           # print(f"1 GIRDI VAR: {unique_user[key]}") # BURADA SON GÜNDE OLABİLİRİZ, nightCİ İÇİN KONTROL ET
 
                             def is_last_day_of_month(date_string):
                                 date_obj = datetime.strptime(date_string, "%Y-%m-%d %H:%M:%S")
@@ -235,43 +230,26 @@ def Get_Employee_Attendance_From_Database(data):
                                 return next_day.month != date_obj.month
                                 
                             if is_last_day_of_month(unique_day) == False:
-                                # print("AYIN SON GUNU DEGIL")
                                 entry_time = unique_user_day_data[key][0]
-                                # EDITED TO UPPER SIDE
-                                # morning_hours = HR_InternalGetters.Internal_Get_morning_Workshift_Hours()
-                                # night_hours = HR_InternalGetters.Internal_Get_night_Workshift_Hours()
+
                                 entry_datetime_obj = datetime.strptime(entry_time, "%Y-%m-%d %H:%M:%S")
                                 earliest_attendance_hour = entry_datetime_obj.hour
                                 earliest_attendance_min = entry_datetime_obj.minute
                                 earliest_attendance_entry = earliest_attendance_hour + earliest_attendance_min / 60.0
 
-                                # print(f"Earliest Hour: {earliest_attendance_hour} - Earliest Minute: {earliest_attendance_min} - Earliest Entry: {earliest_attendance_entry}")
-
                                 morning_hour = datetime.strptime(morning_hours["data"][0]["workshift_start"], "%H:%M").hour
                                 morning_minute = datetime.strptime(morning_hours["data"][0]["workshift_start"], "%H:%M").minute
                                 morning_entry = morning_hour + morning_minute / 60.0
-                                # print(f"morning Hour: {morning_hour} - morning Minute: {morning_minute} morning Entry: {morning_entry}")
 
                                 night_exit_hour = datetime.strptime(night_hours["data"][0]["workshift_end"], "%H:%M").hour
                                 night_exit_minute = datetime.strptime(night_hours["data"][0]["workshift_end"], "%H:%M").minute
                                 night_exit = night_exit_hour + night_exit_minute / 60.0 - 0.1
-                                # print(f"night Hour: {night_exit_hour} - night Minute: {night_exit_minute} night Exit: {night_exit}")
-
-                                # print(f"morning entry: {morning_entry} - night exit: {night_exit}")
-
-                                # print(f"night exit - en erken girdi = {night_exit - earliest_attendance_entry}")
 
                                 difference_to_morning_entry = abs(round(earliest_attendance_entry - morning_entry, 2))
                                 difference_to_night_exit = abs(round(night_exit - earliest_attendance_entry, 2))
 
-                                # print(f"Difference to morning ENTER: {difference_to_morning_entry}")
-                                # print(f"Difference to night EXIT: {difference_to_night_exit}")
                             else:
-                                # print("AYIN SON GUNU")
-                                # EDITED TO UPPER SIDE
                                 entry_time = unique_user_day_data[key][0]
-                                # morning_hours = HR_InternalGetters.Internal_Get_morning_Workshift_Hours() # OPTIMIZE (no need to call it in a for loop)
-                                # night_hours = HR_InternalGetters.Internal_Get_night_Workshift_Hours()
                                 entry_datetime_obj = datetime.strptime(entry_time, "%Y-%m-%d %H:%M:%S")
                                 earliest_attendance_hour = entry_datetime_obj.hour
                                 earliest_attendance_min = entry_datetime_obj.minute
@@ -288,9 +266,7 @@ def Get_Employee_Attendance_From_Database(data):
                                 difference_to_morning_entry = abs(round(earliest_attendance_entry - morning_exit, 2))
                                 difference_to_night_exit = abs(round(earliest_attendance_entry - night_entry, 2))
 
-                            # print(difference_to_morning_entry, difference_to_night_exit)
                             if difference_to_morning_entry < difference_to_night_exit:
-                                # print("Eleman sabah GİRMİŞ, bugün nightci değil.")
                                 refined_data = {
                                     "day" : unique_day,
                                     "employee_register_id" : key,
@@ -301,13 +277,9 @@ def Get_Employee_Attendance_From_Database(data):
                                     "exit" : None,
                                     "note" : "Eksik Veri"
                                 }
-                               # print("üüü")
-                              #  print(refined_data)
                                 final_data[unique_day].append(refined_data)
                             else:
-                                # print("Eleman sabah ÇIKMIŞ, bugün nightci.")
                                 if is_last_day_of_month(unique_day) == False:
-                                    # print("AYIN SON GUNU DEGIL")
                                     workshift_entry_hour = HR_InternalGetters.Internal_Get_Workshift_Entry_Hour_String_With_Workshift_ID(employee_workshift_id)
                                     datetime1 = datetime.strptime(entry_time, "%Y-%m-%d %H:%M:%S")
                                     time2 = datetime.strptime(workshift_entry_hour, "%H:%M").time()
@@ -322,7 +294,6 @@ def Get_Employee_Attendance_From_Database(data):
 
                                     previous_evening_entry = HR_InternalGetters.Internal_Get_Nightshift_Employee_Previous_Day_Entry(user_id, min_time_string, max_time_string)
 
-                                    # print(f"Previous: {previous_evening_entry} Today's: {entry_time}")
                                     if previous_evening_entry == None:
                                         note = "Eksik Veri"
                                         new_unique_day_string = unique_day
@@ -352,11 +323,8 @@ def Get_Employee_Attendance_From_Database(data):
                                             "exit" : entry_time,
                                             "note" : note
                                         }
-                                   # print("ccc")
-                                   # print(refined_data)
 
                                 else:
-                                    # print("AYIN SON GUNU")
                                     workshift_entry_hour = HR_InternalGetters.Internal_Get_Workshift_Exit_Hour_String_With_Workshift_ID(employee_workshift_id)
                                     datetime1 = datetime.strptime(entry_time, "%Y-%m-%d %H:%M:%S")
                                     time2 = datetime.strptime(workshift_entry_hour, "%H:%M").time()
@@ -371,7 +339,6 @@ def Get_Employee_Attendance_From_Database(data):
 
                                     next_morning_exit = HR_InternalGetters.Internal_Get_Nightshift_Employee_Next_Morning_Exit(user_id, min_time_string, max_time_string)
 
-                                    # print(f"NEXT: {next_morning_exit} Today's: {entry_time}")
                                     if next_morning_exit == None:
                                         note = "Eksik Veri"
                                     else:
@@ -388,17 +355,11 @@ def Get_Employee_Attendance_From_Database(data):
                                         "note" : note
                                     }
 
-                                    # print(refined_data)
-
                                 final_data[unique_day].append(refined_data)
 
                         elif len(unique_user_day_data[key]) == 2:
                             entry_time = unique_user_day_data[key][0]
                             exit_time = unique_user_day_data[key][1]
-
-                            # EDITED TO UPPER SIDE                            
-                            # morning_hours = HR_InternalGetters.Internal_Get_morning_Workshift_Hours()
-                            # night_hours = HR_InternalGetters.Internal_Get_night_Workshift_Hours()
 
                             entry_datetime_obj = datetime.strptime(entry_time, "%Y-%m-%d %H:%M:%S")
                             earliest_attendance_hour = entry_datetime_obj.hour
@@ -420,7 +381,6 @@ def Get_Employee_Attendance_From_Database(data):
                             print(difference_to_morning_entry)
 
                             if difference_to_morning_entry < difference_to_night_exit:
-                                # print("Eleman sabah gelmiş bugün sabahçı")
                                 refined_data = {
                                     "day" : unique_day,
                                     "employee_register_id" : key,
@@ -431,10 +391,7 @@ def Get_Employee_Attendance_From_Database(data):
                                     "exit" : exit_time,
                                     "note" : "OK"
                                 }
-                                # print(refined_data)
                             else:
-                                # print("Eleman sabah ÇIKMIŞ, bugün nightci.")
-
                                 workshift_entry_hour = HR_InternalGetters.Internal_Get_Workshift_Entry_Hour_String_With_Workshift_ID(employee_workshift_id)
                                 datetime1 = datetime.strptime(entry_time, "%Y-%m-%d %H:%M:%S")
                                 time2 = datetime.strptime(workshift_entry_hour, "%H:%M").time()
@@ -442,7 +399,6 @@ def Get_Employee_Attendance_From_Database(data):
                                 new_new_datetime = new_datetime - timedelta(days=1)
 
                                 if earliest_attendance_entry < 2:
-                                    # print("night 12-2 arası çıkmış")
                                     min_time = datetime1 - timedelta(hours = 7)
                                     max_time = datetime1 + timedelta(hours = 1)
                                 else:
@@ -456,7 +412,6 @@ def Get_Employee_Attendance_From_Database(data):
                                 previous_evening_entry = HR_InternalGetters.Internal_Get_Nightshift_Employee_Previous_Day_Entry(user_id, min_time_string, max_time_string)
 
 
-                                # print(f"Previous: {previous_evening_entry} Today's: {entry_time}")
                                 if previous_evening_entry == None:
                                     note = "Eksik Veri"
                                     new_unique_day_string = unique_day
@@ -476,22 +431,16 @@ def Get_Employee_Attendance_From_Database(data):
                                     "exit" : entry_time,
                                     "note" : note
                                 }
-                                # print(refined_data)
-
 
                             final_data[unique_day].append(refined_data)
 
                         elif len(unique_user_day_data[key]) == 3:
-                            # print("3 GIRDI VAR")
 
                             entry_time = unique_user_day_data[key][0]
                             exit_time = unique_user_day_data[key][1]
 
                             possible_reentry_time = unique_user_day_data[key][2]
 
-                            # EDITED TO UPPER SIDE
-                            # morning_hours = HR_InternalGetters.Internal_Get_morning_Workshift_Hours() # OPTIMIZE (no need to call it in a for loop)
-                            # night_hours = HR_InternalGetters.Internal_Get_night_Workshift_Hours()
                             entry_datetime_obj = datetime.strptime(entry_time, "%Y-%m-%d %H:%M:%S")
                             earliest_attendance_hour = entry_datetime_obj.hour
                             earliest_attendance_min = entry_datetime_obj.minute
@@ -510,9 +459,7 @@ def Get_Employee_Attendance_From_Database(data):
 
 
                             if difference_to_morning_entry < difference_to_night_exit:
-                                # print("Eleman sabah gelmiş bugün sabahçı")
 
-                                
                                 refined_data = {
                                     "day" : unique_day,
                                     "employee_register_id" : key,
@@ -524,8 +471,6 @@ def Get_Employee_Attendance_From_Database(data):
                                     "note" : "OK"
                                 }
                                 final_data[unique_day].append(refined_data)
-
-                                # Önce sabahki mesaisini kaydettik, sonra 2. bir mesai var mı kontrole geçiyoruz
 
                                 reentry_datetime = datetime.strptime(possible_reentry_time, "%Y-%m-%d %H:%M:%S")
                                 min_time = reentry_datetime + timedelta(minutes=5)
@@ -547,70 +492,14 @@ def Get_Employee_Attendance_From_Database(data):
                                     }
                                     final_data[f"{unique_day}"].append(refined_data2)
 
-
-
-
                             else:
-                                # print("Eleman sabah ÇIKMIŞ, bugün nightci.")
                                 pass
-
-                                # workshift_entry_hour = HR_InternalGetters.Internal_Get_Workshift_Entry_Hour_String_With_Workshift_ID(employee_workshift_id)
-                                # datetime1 = datetime.strptime(entry_time, "%Y-%m-%d %H:%M:%S")
-                                # time2 = datetime.strptime(workshift_entry_hour, "%H:%M").time()
-                                # new_datetime = datetime(datetime1.year, datetime1.month, datetime1.day - 1, time2.hour, time2.minute, time2.second)
-
-
-                                # if earliest_entry < 2:
-                                #     print("night 12-2 arası çıkmış")
-                                #     min_time = datetime1 - timedelta(hours = 5)
-                                #     max_time = datetime1 - timedelta(hours = 1)
-                                # else:
-                                #     min_time = new_datetime - timedelta(hours=1.5)
-                                #     max_time = new_datetime + timedelta(hours=5)
-
-                                # min_time_string = min_time.strftime("%Y-%m-%d %H:%M:%S")
-                                # max_time_string = max_time.strftime("%Y-%m-%d %H:%M:%S")
-
-
-                                # previous_evening_entry = HR_InternalGetters.Internal_Get_Nightshift_Employee_Previous_Day_Entry(user_id, min_time_string, max_time_string)
-
-
-                                # # print(f"Previous: {previous_evening_entry} Today's: {entry_time}")
-                                # if previous_evening_entry == None:
-                                #     note = "Eksik Veri"
-                                #     new_unique_day_string = unique_day
-
-                                # else:
-                                #     note = "OK"
-                                #     new_unique_day = datetime.strptime(unique_day, "%Y-%m-%d %H:%M:%S") - timedelta(days=1)
-                                #     new_unique_day_string = datetime.strftime(new_unique_day, "%Y-%m-%d %H:%M:%S")
-
-                                # refined_data = {
-                                #     "day" : new_unique_day_string,
-                                #     "employee_register_id" : key,
-                                #     "employee_name" : employee_name,
-                                #     "employee_surname" : employee_surname,
-                                #     "employee_company" : employee_company_string,
-                                #     "entry" : previous_evening_entry,
-                                #     "exit" : entry_time,
-                                #     "note" : note
-                                # }
-                                # print(entry_time)
-                                # print(previous_evening_entry)
-
-                                # print(refined_data)
-
-                                # final_data[unique_day].append(refined_data)
 
                         elif len(unique_user_day_data[key]) == 4:
                             entry_1 = unique_user_day_data[key][0]
                             entry_2 = unique_user_day_data[key][1]
                             entry_3 = unique_user_day_data[key][2]
                             entry_4 = unique_user_day_data[key][3]
-
-                            # EDITED TO UPPER SIDE
-                            # morning_hours = HR_InternalGetters.Internal_Get_morning_Workshift_Hours()
-                            # night_hours = HR_InternalGetters.Internal_Get_night_Workshift_Hours()
 
                             entry_datetime_obj = datetime.strptime(entry_1, "%Y-%m-%d %H:%M:%S")
                             earliest_attendance_hour = entry_datetime_obj.hour
@@ -629,7 +518,6 @@ def Get_Employee_Attendance_From_Database(data):
                             difference_to_night_exit = abs(round(earliest_attendance_entry - night_exit, 2))
 
                             if difference_to_morning_entry < difference_to_night_exit:
-                                # print("Eleman sabah gelmiş bugün sabahçı")
                                 refined_data = {
                                     "day" : unique_day,
                                     "employee_register_id" : key,
@@ -657,7 +545,6 @@ def Get_Employee_Attendance_From_Database(data):
                                 final_data[unique_day].append(refined_data2)
 
                             else:
-                                # print("Eleman sabah gelmiş bugün sabahçı")
                                 refined_data = {
                                     "day" : unique_day,
                                     "employee_register_id" : key,
@@ -668,8 +555,6 @@ def Get_Employee_Attendance_From_Database(data):
                                     "exit" : entry_3,
                                     "note" : "İlk Giriş"
                                 }
-
-                                # print(refined_data)
 
                                 final_data[unique_day].append(refined_data)
 
@@ -685,35 +570,7 @@ def Get_Employee_Attendance_From_Database(data):
                                     "is_extra" : True
                                 }
 
-                                # print(refined_data2)
                                 final_data[unique_day].append(refined_data2)
-
-                            # refined_data = {
-                            #     "day" : unique_day,
-                            #     "employee_register_id" : key,
-                            #     "employee_name" : employee_name,
-                            #     "employee_surname" : employee_surname,
-                            #     "employee_company" : employee_company_string,
-                            #     "entry" : entry_1,
-                            #     "exit" : entry_2,
-                            #     "note" : "İlk Giriş"
-                            # }
-
-                            # final_data[unique_day].append(refined_data)
-
-
-                            # refined_data2 = {
-                            #     "day" : f"{unique_day}(2)",
-                            #     "employee_register_id" : key,
-                            #     "employee_name" : employee_name,
-                            #     "employee_surname" : employee_surname,
-                            #     "employee_company" : employee_company_string,
-                            #     "entry" : entry_3,
-                            #     "exit" : entry_4,
-                            #     "note" : "İkinci Giriş",
-                            #     "is_extra" : True
-                            # }
-                            # final_data[unique_day].append(refined_data2)
 
 
                 if final_data[unique_day] == []:
@@ -730,7 +587,6 @@ def Get_Employee_Attendance_From_Database(data):
                 "result" : final_data
             }
         else:
-            # print("here1")
             return_data = {
                 "status" : "not_found",
                 "result" : None

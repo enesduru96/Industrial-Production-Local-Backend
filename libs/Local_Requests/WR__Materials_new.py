@@ -53,18 +53,6 @@ def handle_scale_weighed_materials(data):
 
     exit()
 
-    # sql_getstring = f"SELECT count FROM raw_materials WHERE name='%s'"
-    # result = cursor.execute(_mysql.escape_string(sql_getstring))
-    # print(result)
-    # cursor.close()
-
-
-
-    # response = app.response_class(
-    #     response=json.dumps(data),
-    #     status=200,
-    #     mimetype='application/json'
-    # )
 
 def define_stock_material(data):
     db = GetMyDB()

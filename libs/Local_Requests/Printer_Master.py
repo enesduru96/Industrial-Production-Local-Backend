@@ -255,7 +255,6 @@ def Print_General_Personnel_Expenses(salary_data, year, month_name):
     rows_per_page = 25
     for start in range(0, num_rows, rows_per_page):
         end = start + rows_per_page
-        #print(end)
         table_data = data[start:end]
         if end > 25:
             c.showPage()
@@ -273,8 +272,6 @@ def Print_General_Personnel_Expenses(salary_data, year, month_name):
         else:
             table1.drawOn(c, 20, margin - h)
         
-
-        #print(h)
 
     # BOTTOM TOTAL PART
     if c._pageNumber == 1:
@@ -646,7 +643,6 @@ def print_material_delivery_report(malzemeler, teslim_alan):
     rows_per_page = 25
     for start in range(0, num_rows, rows_per_page):
         end = start + rows_per_page
-        #print(end)
         table_data = data[start:end]
         if end > 25:
             c.showPage()

@@ -813,7 +813,7 @@ def Edit_Special_Holiday(data):
     
     return response_data
 
-#TODO
+
 def Remove_Special_Holiday(data):
     db = get_my_db()
     holiday_name =  data['holiday_name']

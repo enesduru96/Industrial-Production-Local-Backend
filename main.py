@@ -41,7 +41,7 @@ def Handle_Add_Employee_To_Database():
         data = request.json
     except Exception as error:
         print(error)
-    data_received = data['data_sent'] #TODO Handle sent data
+    data_received = data['data_sent']
     response_data = HR_EmployeeHandler.Add_Employee_To_Database(data_received)
     return response_data
 
@@ -116,14 +116,14 @@ def Handle_Get_Employees():
 @app.route('/edit-employee', methods=['POST'])
 def Handle_Edit_Employee():
     data = request.json
-    data_received = data['data_sent'] #TODO Handle sent data
+    data_received = data['data_sent']
     response_data = HR_EmployeeHandler.Edit_Employee(data_received)
     return response_data
 
 @app.route('/set-employee-left', methods=['POST'])
 def Handle_Set_Employee_Left():
     data = request.json
-    data_received = data['data_sent'] #TODO Handle sent data
+    data_received = data['data_sent']
     response_data = HR_EmployeeHandler.Set_Employee_Left(data_received)
 
     response = app.response_class(response=response_data, status=200, mimetype='application/json')
@@ -132,7 +132,7 @@ def Handle_Set_Employee_Left():
 @app.route('/remove-employee', methods=['POST'])
 def Hanlde_Remove_Employee():
     data = request.json
-    data_received = data['data_sent'] #TODO Handle sent data
+    data_received = data['data_sent']
     response_data = HR_EmployeeHandler.Remove_Employee_From_Database(data_received)
 
     response = app.response_class(response=response_data, status=200, mimetype='application/json')
@@ -386,17 +386,15 @@ def Handle_Get_Companies():
 @app.route('/calculate-salaries', methods=['POST'])
 def Handle_Calculate_Salary():
     data = request.json
-    data_received = data['data_sent'] #TODO Handle sent data
-    #print(data_received)
+    data_received = data['data_sent']
     response_data = HR_SalaryCalculator.calculate_salaries(data_received)
     return response_data
 
 
-#Genel bordro
 @app.route('/calculate-general-personnel-expenses', methods=['POST'])
 def Handle_Calculate_General_Personnel_Expenses():
     data = request.json
-    data_received = data['data_sent'] #TODO Handle sent data
+    data_received = data['data_sent']
     response_data = HR_SalaryCalculator.calculate_general_expenses(data_received)
     return response_data
 
@@ -406,14 +404,14 @@ def Handle_Calculate_General_Personnel_Expenses():
 @app.route('/calculate-terminated-employee', methods=['POST'])
 def Handle_Calculate_Terminated_Employee():
     data = request.json
-    data_received = data['data_sent'] #TODO Handle sent data
+    data_received = data['data_sent']
     response_data = HR_SalaryCalculator.calculate_terminated_employee_payment(data_received)
     return response_data
 
 @app.route('/terminate-employee', methods=['POST'])
 def Handle_Terminate_Employee():
     data = request.json
-    data_received = data['data_sent'] #TODO Handle sent data
+    data_received = data['data_sent']
     response_data = HR_EmployeeHandler.Set_Employee_Left(data_received)
     return response_data
 # endregion
@@ -447,42 +445,41 @@ def Handle_Get_Highest_Rating_Employee_Statistics():
 # endregion
 
 
-# BELOW THIS PART IS STILL USING LOCALREQUESTS MAIN FILE
 
 # region ADVANCE PAYMENTS
 
 @app.route('/add-advance-payment', methods=['POST'])
 def Handle_Add_Advance_payment():
     data = request.json
-    data_received = data['data_sent'] #TODO Handle sent data
+    data_received = data['data_sent']
     response_data = LocalRequests.Add_Advance_Payment(data_received)
     return response_data
 
 @app.route('/get-advance-payments', methods=['POST'])
 def Handle_Get_Advance_Payments():
     data = request.json
-    data_received = data['data_sent'] #TODO Handle sent data
+    data_received = data['data_sent']
     response_data = LocalRequests.Get_Advance_Payments(data_received)
     return response_data
 
 @app.route('/get-advance-payment-specific', methods=['POST'])
 def Handle_GET_Advance_Payment_Specific():
     data = request.json
-    data_received = data['data_sent'] #TODO Handle sent data
+    data_received = data['data_sent']
     response_data = LocalRequests.Get_Specific_Advance_Payment(data_received)
     return response_data
 
 @app.route('/edit-advance-payment', methods=['POST'])
 def Handle_Edit_Advance_Payment():
     data = request.json
-    data_received = data['data_sent'] #TODO Handle sent data
+    data_received = data['data_sent']
     response_data = LocalRequests.Edit_Advance_Payment(data_received)
     return response_data
 
 @app.route('/remove-advance-payment', methods=['POST'])
 def Handle_Remove_Advance_Payment():
     data = request.json
-    data_received = data['data_sent'] #TODO Handle sent data
+    data_received = data['data_sent']
     response_data = LocalRequests.Remove_Advance_Payment(data_received)
     return response_data
 
@@ -493,35 +490,35 @@ def Handle_Remove_Advance_Payment():
 @app.route('/add-extra-payment', methods=['POST'])
 def Handle_Add_Extra_payment():
     data = request.json
-    data_received = data['data_sent'] #TODO Handle sent data
+    data_received = data['data_sent']
     response_data = LocalRequests.Add_Extra_Payment(data_received)
     return response_data
 
 @app.route('/get-extra-payments', methods=['POST'])
 def Handle_Get_Extra_Payments():
     data = request.json
-    data_received = data['data_sent'] #TODO Handle sent data
+    data_received = data['data_sent']
     response_data = LocalRequests.Get_Extra_Payments(data_received)
     return response_data
 
 @app.route('/get-extra-payment-specific', methods=['POST'])
 def Handle_GET_Extra_Payment_Specific():
     data = request.json
-    data_received = data['data_sent'] #TODO Handle sent data
+    data_received = data['data_sent']
     response_data = LocalRequests.Get_Specific_Extra_Payment(data_received)
     return response_data
 
 @app.route('/edit-extra-payment', methods=['POST'])
 def Handle_Edit_Extra_Payment():
     data = request.json
-    data_received = data['data_sent'] #TODO Handle sent data
+    data_received = data['data_sent']
     response_data = LocalRequests.Edit_Extra_Payment(data_received)
     return response_data
 
 @app.route('/remove-extra-payment', methods=['POST'])
 def Handle_Remove_Extra_Payment():
     data = request.json
-    data_received = data['data_sent'] #TODO Handle sent data
+    data_received = data['data_sent']
     response_data = LocalRequests.Remove_Extra_Payment(data_received)
     return response_data
 
@@ -532,35 +529,35 @@ def Handle_Remove_Extra_Payment():
 @app.route('/add-permission', methods=['POST'])
 def Handle_Add_Permission():
     data = request.json
-    data_received = data['data_sent'] #TODO Handle sent data
+    data_received = data['data_sent']
     response_data = LocalRequests.Add_Permission(data_received)
     return response_data
 
 @app.route('/get-permissions', methods=['POST'])
 def Handle_Get_Permissions():
     data = request.json
-    data_received = data['data_sent'] #TODO Handle sent data
+    data_received = data['data_sent']
     response_data = LocalRequests.Get_Permissions(data_received)
     return response_data
 
 @app.route('/get-permission-specific', methods=['POST'])
 def Handle_GET_Permission_Specific():
     data = request.json
-    data_received = data['data_sent'] #TODO Handle sent data
+    data_received = data['data_sent']
     response_data = LocalRequests.Get_Specific_Permission(data_received)
     return response_data
 
 @app.route('/edit-permission', methods=['POST'])
 def Handle_Edit_Permission():
     data = request.json
-    data_received = data['data_sent'] #TODO Handle sent data
+    data_received = data['data_sent']
     response_data = LocalRequests.Edit_Permission(data_received)
     return response_data
 
 @app.route('/remove-permission', methods=['POST'])
 def Handle_Remove_Permission():
     data = request.json
-    data_received = data['data_sent'] #TODO Handle sent data
+    data_received = data['data_sent']
     response_data = LocalRequests.Remove_Permission(data_received)
     return response_data
 
@@ -572,7 +569,7 @@ def Handle_Remove_Permission():
 def Handle_Add_Special_Holiday():
     try:
         data = request.json
-        data_received = data['data_sent'] #TODO Handle sent data
+        data_received = data['data_sent']
         response_data = LocalRequests.Add_Special_Holiday(data_received)
         return response_data
     except Exception as error:
@@ -588,14 +585,14 @@ def Handle_Get_Special_Holidays():
 @app.route('/edit-special-holiday', methods=['POST'])
 def Handle_Edit_Special_Holiday():
     data = request.json
-    data_received = data['data_sent'] #TODO Handle sent data
+    data_received = data['data_sent']
     response_data = LocalRequests.Edit_Special_Holiday(data_received)
     return response_data
 
 @app.route('/remove-special-holiday', methods=['POST'])
 def Handle_Remove_Special_Holiday():
     data = request.json
-    data_received = data['data_sent'] #TODO Handle sent data
+    data_received = data['data_sent']
     response_data = LocalRequests.Remove_Special_Holiday(data_received)
     return response_data
 

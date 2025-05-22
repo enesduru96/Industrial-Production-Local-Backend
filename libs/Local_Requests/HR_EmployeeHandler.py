@@ -171,7 +171,6 @@ def Get_Absent_Employees_From_Database_Today(data):
 
     except Exception as error:
         LogError(error)
-        # cursor.close()
         print(f"Error While Getting Employees: {type(error).__name__} - {error}")
         response_data = {"status" : "error", "error_text" : {error}}
     
@@ -444,7 +443,6 @@ def Edit_Employee(data):
     except:pass 
     return response_data
 
-#TODO
 def Set_Employee_Left(data):
     db = GetMyDB()
     employee_name =                 data['employee_name']
@@ -495,6 +493,6 @@ def Set_Employee_Left(data):
     except:pass 
     return response_data
 
-#TODO
+
 def Remove_Employee_From_Database(data):
     db = GetMyDB()

@@ -56,16 +56,6 @@ def add_customer_to_db(data):
     telefon = data["telefon"]
     notlar = data["notlar"]
 
-    # cursor = db.cursor()
-    # query = f'''SELECT * FROM wr_material_providers WHERE material_provider="%s" ''' % material_provider
-    # cursor.execute(query)
-    # foundRecords = cursor.fetchall()
-    # cursor.close()
-
-    # if len(foundRecords) > 0:
-    #     response_data = {"status" : "duplicate"}
-    #     return response_data
-    
     cursor = db.cursor()
     sql = '''INSERT INTO wr_customers (id, company, customer_name, contact_name, customer_email, customer_phone, notes) VALUES (%s, %s, %s, %s, %s, %s, %s)'''
     try:
